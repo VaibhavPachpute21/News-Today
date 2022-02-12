@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:newstoday/Screens/login.dart';
+import 'package:newstoday/Screens/auth/login.dart';
 
 void main() {
   runApp(MyApp());

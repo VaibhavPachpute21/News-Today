@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:newstoday/Screens/Drawer.dart';
+import 'package:newstoday/Screens/screens/ArticlesScreen.dart';
+import 'package:newstoday/Screens/screens/HomeScreen.dart';
+import 'package:newstoday/Services/Apis/Apis.dart';
 
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<LandingPage> {
   int _selectedIndex = 0;
-  int _currentIndex = 0;
-  final _inactiveColor = Colors.grey;
+  bool isLoading=true;
   final List<Widget> _widgetOption = [
-    const Text("Home"),
-    const Text("Articles"),
-    const Text("My City"),
-    const Text("Live")
+    const NewsHomeScreen(),
+    const NewsArticlesScreen(),
+    const Center(child:  Text("Working on My City Screen")),
+    const Center(child:  Text("Working on Live Screen"))
   ];
 
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  init() async {
+    await NewsServices().getEverything();
+    await NewsServices().getLocalData();
+    setState(() {
+      isLoading=false;
+    });
   }
 
   void _onItemTapped(int index) {
@@ -33,9 +45,36 @@ class _HomeScreenState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOption.elementAt(_selectedIndex),
+      appBar:AppBar(
+        titleSpacing: 5,
+        title:Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // ignore: prefer_const_literals_to_create_immutables
+        children: [
+           const Text("Welcome,"),
+           const Text("Carol Collins",style: TextStyle(fontSize: 14),)
+        ],
       ),
+      actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            tooltip: 'Notification',
+            onPressed: () {},
+          ), //IconButton
+          IconButton(
+            icon: const Icon(Icons.search),
+            tooltip: 'Search',
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'More',
+            onPressed: () {},
+          ), //IconButton
+        ],
+      ),
+      drawer: MyDrawer(),
+      body:isLoading?const Center(child:  CircularProgressIndicator()) : _widgetOption.elementAt(_selectedIndex),
       bottomNavigationBar:bottomNav(),
      // bottomNavigationBar: bottomNav(),
     );
@@ -59,7 +98,7 @@ class _HomeScreenState extends State<LandingPage> {
           label: "Live",
         ),
       ],
-      //backgroundColor: Colors.blue,
+      
       selectedItemColor: Colors.red,
       unselectedItemColor: Colors.red.shade200,
       type: BottomNavigationBarType.shifting,
@@ -69,43 +108,6 @@ class _HomeScreenState extends State<LandingPage> {
       elevation: 5,
     );
   }
-
-// Widget _buildBottomBar(){
-//     return CustomAnimatedBottomBar(
-//       containerHeight: 70,
-//       backgroundColor: Colors.black,
-//       selectedIndex: _currentIndex,
-//       showElevation: true,
-//       itemCornerRadius: 24,
-//       curve: Curves.easeIn,
-//       onItemSelected: (index) => setState(() => _currentIndex = index),
-//       items: <BottomNavyBarItem>[
-//         BottomNavyBarItem(
-//           icon: const Icon(Icons.home),
-//           title: const Text('Home'),
-//           activeColor: Colors.green,
-//           inactiveColor: _inactiveColor,
-//           textAlign: TextAlign.center,
-//         ),
-//         BottomNavyBarItem(
-//           icon: const Icon(Icons.ondemand_video),
-//           title: const Text('YT Video'),
-//           activeColor: Colors.purpleAccent,
-//           inactiveColor: _inactiveColor,
-//           textAlign: TextAlign.center,
-//         ),
-//         BottomNavyBarItem(
-//           icon: const Icon(Icons.list_alt_outlined),
-//           title: const Text(
-//             "MyToDo's",
-//           ),
-//           activeColor: Colors.pink,
-//           inactiveColor: _inactiveColor,
-//           textAlign: TextAlign.center,
-//          ),
-//       ],
-//     );
-//   }
 
 
 }
