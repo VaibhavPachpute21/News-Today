@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:newstoday/Screens/LandingPage.dart';
-import 'package:newstoday/Screens/forgotPassword.dart';
-import 'package:newstoday/Screens/register.dart';
+import 'package:newstoday/Screens/auth/forgotPassword.dart';
+import 'package:newstoday/Screens/auth/register.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
