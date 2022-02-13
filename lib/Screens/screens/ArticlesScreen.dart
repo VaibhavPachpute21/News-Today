@@ -1,100 +1,340 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:newstoday/Screens/screens/view_news.dart';
 import 'package:newstoday/globalData.dart' as global;
 
+class ListItem1<T> {
+  bool isSelected = false; //Selection property to highlight or not
+  T data; //Data of the user
+  ListItem1(this.data); //Constructor to assign the data
+}
+
+class ReportReasonList {
+  String reason;
+  int index;
+  ReportReasonList({required this.reason, required this.index});
+}
+
 class NewsArticlesScreen extends StatefulWidget {
-  const NewsArticlesScreen({ Key? key }) : super(key: key);
+  const NewsArticlesScreen({Key? key}) : super(key: key);
 
   @override
   _NewsArticlesScreenState createState() => _NewsArticlesScreenState();
 }
 
 class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
+  List list = [];
+  int groupValue = 0;
+
+  String radioItemHolder = 'Vulgur content';
+  
+  int id = 1;
+
+  List<ReportReasonList> nList = [
+    ReportReasonList(
+      index: 1,
+      reason: "Vulgur content",
+    ),
+    ReportReasonList(
+      index: 2,
+      reason: "False claims",
+    ),
+    ReportReasonList(
+      index: 3,
+      reason: "Sexual content",
+    ),
+    ReportReasonList(
+      index: 4,
+      reason: "Voilent content",
+    ),
+    ReportReasonList(
+      index: 5,
+      reason: "Other",
+    ),
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    populateData();
+    super.initState();
+  }
+
+  void populateData() {
+    for (int i = 0; i < global.headLines.length; i++) {
+      list.add(ListItem1<String>("item $i"));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
-        child: ListView.builder(
-            padding: const EdgeInsets.all(1),
-            itemCount: global.localLeadLines.length,
-            itemBuilder: (context, index) {
-              return Container(
-                padding: const EdgeInsets.all(2),
-                margin: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(1)),
-                child: InkWell(
-                  onTap: () {
-                    var news=global.localLeadLines[index];
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=>ShowNews(news:news)) );
-                  },
-                  child: Column(
-                    children: [
-                      global.localLeadLines[index].urlToImage != null
-                          ? SizedBox(
-                              child: Image.network(
-                                global.localLeadLines[index].urlToImage.toString(),
-                              ),
-                            )
-                          : const SizedBox(),
-                      Row(
+    return SafeArea(
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: [
+          ...global.localLeadLines.map((e) => InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ShowNews(news: e)));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.black45)),
+                  margin: const EdgeInsets.all(2.0),
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    e.urlToImage != null
+                        ? Expanded(
+                            child: Image.network(
+                            e.urlToImage.toString(),
+                          ))
+                        : SizedBox(),
+                    Container(
+                      color: Colors.red,
+                      child: Column(
                         children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.60,
-                            child: Text(
-                              global.localLeadLines[index].title.toString(),
-                              style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis),
-                              maxLines: 2,
-                            ),
+                          Text(
+                            e.title,
+                            style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                color: Colors.white),
+                            maxLines: 2,
                           ),
-                          Expanded(
-                            //width: MediaQuery.of(context).size.width * 0.10,
-                            //height: MediaQuery.of(context).size.height * 0.025,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.bookmark_border,
-                                size: 20,
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: list[global.localLeadLines.indexOf(e)]
+                                        .isSelected
+                                    ? Icon(Icons.bookmark_added_rounded,
+                                        size: 20, color: Colors.white)
+                                    : Icon(Icons.bookmark_border,
+                                        size: 20, color: Colors.white),
+                                tooltip: "Bookmark",
+                                onPressed: () {
+                                  setState(() {
+                                    list[global.localLeadLines.indexOf(e)]
+                                            .isSelected =
+                                        !list[global.localLeadLines.indexOf(e)]
+                                            .isSelected;
+                                    if (list[global.localLeadLines.indexOf(e)]
+                                            .isSelected ==
+                                        true) {
+                                      global.bookMarkedArticles.add(e);
+                                      print(global.bookMarkedArticles);
+                                    } else {
+                                      global.bookMarkedArticles.removeWhere(
+                                          (element) =>
+                                              element ==
+                                              global.headLines[global
+                                                  .localLeadLines
+                                                  .indexOf(e)]);
+                                      print(global.bookMarkedArticles);
+                                    }
+                                  });
+                                },
                               ),
-                              tooltip: "Bookmark",
-                              onPressed: () {},
-                            ),
+                              IconButton(
+                                icon: Icon(Icons.share, color: Colors.white),
+                                onPressed: () {
+                                  sharePostBottomSheet();
+                                },
+                              ),
+                              PopupMenuButton(
+                                icon: Icon(Icons.more_vert_outlined,
+                                    color: Colors.white),
+                                itemBuilder: (context) {
+                                  return [
+                                    PopupMenuItem(
+                                      value: 'Not Interested',
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          GFToast.showToast(
+                                              "Next time you'll see fewer such post",
+                                              context,
+                                              toastPosition:
+                                                  GFToastPosition.BOTTOM);
+                                        },
+                                        child: Text(
+                                          "Not Interested",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: 'Report',
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          reportPostBottomSheet();
+                                        },
+                                        child: Text(
+                                          "Report",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
+                              )
+                            ],
                           ),
-                          Expanded(
-                            //width: MediaQuery.of(context).size.width * 0.10,
-                           // height: MediaQuery.of(context).size.height * 0.025,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.share,
-                                size: 20,
-                              ),
-                              tooltip: "Share",
-                              onPressed: () {
-                                // showBottomSheet();
-                              },
-                            ),
-                          ),
-                          Expanded(
-                           // width: MediaQuery.of(context).size.width * 0.13,
-                           // height: MediaQuery.of(context).size.height * 0.025,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.more_vert_rounded,
-                                size: 20,
-                              ),
-                              tooltip: "more",
-                              onPressed: () {
-                                // showBottomSheet();
-                              },
-                            ),
-                          )
                         ],
+                      ),
+                    )
+                  ]),
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+
+  sharePostBottomSheet() {
+    return showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              //padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15),
+                      topLeft: Radius.circular(15))),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Share with",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FlatButton(
+                        onPressed: () {},
+                        child: Column(children: [
+                          Image.asset(
+                            "./assets/images/Attachment.png",
+                            height: 25,
+                          ),
+                          Text(
+                            "Share link",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ]),
+                      ),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Column(children: [
+                          Image.asset(
+                            "./assets/images/telegram.png",
+                            height: 25,
+                          ),
+                          Text(
+                            "Telegram",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ]),
+                      ),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Column(children: [
+                          Image.asset(
+                            "./assets/images/whatsapp.png",
+                            height: 25,
+                          ),
+                          Text(
+                            "WhatsApp",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ]),
                       )
                     ],
-                  ),
-                ),
-              );
-            }));
-  
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
+
+  reportPostBottomSheet() {
+    return showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              //padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15),
+                      topLeft: Radius.circular(15))),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Reason for reporting this article",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Expanded(
+                      child: Container(
+                    height: 350.0,
+                    child: Column(
+                      children: nList
+                          .map((data) => RadioListTile(
+                                title: Text("${data.reason}"),
+                                groupValue: id,
+                                value: data.index,
+                                onChanged: (val) {
+                                  setState(() {
+                                    radioItemHolder = data.reason;
+                                    id = data.index;
+                                  });
+                                },
+                              ))
+                          .toList(),
+                    ),
+                  )),
+                  
+                  Container(
+                      height: 50,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: GFButton(
+                        text: "Submit",
+                        color: Colors.red,
+                        shape: GFButtonShape.pills,
+                        blockButton: true,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
 }

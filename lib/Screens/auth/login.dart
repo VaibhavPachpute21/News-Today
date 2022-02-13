@@ -4,6 +4,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:newstoday/Screens/LandingPage.dart';
 import 'package:newstoday/Screens/auth/forgotPassword.dart';
 import 'package:newstoday/Screens/auth/register.dart';
+import 'package:newstoday/Screens/screens/LanguagePreferenceScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   shape: GFButtonShape.pills,
                   blockButton: true,
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (contex)=>LandingPage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (contex)=>LanguagePrefScreen()));
                     print(nameController.text);
                     print(passwordController.text);
                   },

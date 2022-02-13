@@ -9,6 +9,12 @@ import 'package:newstoday/Screens/screens/view_news.dart';
 import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/globalData.dart' as global;
 
+class ListItem<T> {
+  bool isSelected = false; //Selection property to highlight or not
+  T data; //Data of the user
+  ListItem(this.data); //Constructor to assign the data
+}
+
 class NewsHomeScreen extends StatefulWidget {
   const NewsHomeScreen({Key? key}) : super(key: key);
 
@@ -17,6 +23,20 @@ class NewsHomeScreen extends StatefulWidget {
 }
 
 class _NewsHomeScreenState extends State<NewsHomeScreen> {
+  List list = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    populateData();
+    super.initState();
+  }
+
+  void populateData() {
+    for (int i = 0; i < global.headLines.length; i++){
+       list.add(ListItem<String>("item $i"));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,8 +52,11 @@ class _NewsHomeScreenState extends State<NewsHomeScreen> {
                     borderRadius: BorderRadius.circular(1)),
                 child: InkWell(
                   onTap: () {
-                    var news=global.headLines[index];
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=>ShowNews(news:news)) );
+                    var news = global.headLines[index];
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ShowNews(news: news)));
                   },
                   child: Column(
                     children: [
@@ -59,17 +82,35 @@ class _NewsHomeScreenState extends State<NewsHomeScreen> {
                             width: MediaQuery.of(context).size.width * 0.13,
                             //height: MediaQuery.of(context).size.height * 0.025,
                             child: IconButton(
-                              icon: const Icon(
-                                Icons.bookmark_border,
-                                size: 20,
-                              ),
+                              icon: list[index].isSelected
+                                  ? Icon(
+                                      Icons.bookmark_added_rounded,
+                                      size: 20,
+                                    )
+                                  : Icon(
+                                      Icons.bookmark_border,
+                                      size: 20,
+                                    ),
                               tooltip: "Bookmark",
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                 list[index].isSelected = !list[index].isSelected;
+                                 if(list[index].isSelected==true){
+                                   global.bookMarkedArticles.add(global.headLines[index]);
+                                   print(global.bookMarkedArticles);
+                                 }else{
+                                   global.bookMarkedArticles.removeWhere((element) => 
+                                     element==global.headLines[index]
+                                   );
+                                   print(global.bookMarkedArticles);
+                                 }
+                                });
+                              },
                             ),
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.13,
-                           // height: MediaQuery.of(context).size.height * 0.025,
+                            // height: MediaQuery.of(context).size.height * 0.025,
                             child: IconButton(
                               icon: const Icon(
                                 Icons.share,
@@ -87,8 +128,8 @@ class _NewsHomeScreenState extends State<NewsHomeScreen> {
                   ),
                 ),
               );
+          
             }));
-  
   }
 
   showBottomSheet() {
@@ -110,29 +151,55 @@ class _NewsHomeScreenState extends State<NewsHomeScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Share with",style: TextStyle(fontSize:16 ),),
+                  Text(
+                    "Share with",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   SizedBox(
                     height: 5,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      FlatButton(onPressed: (){},
-                      child:Column(children:[
-                        Image.asset("./assets/images/Attachment.png",height: 25,),
-                        Text("Share link",style: TextStyle(fontSize:12 ),)
-                      ]),),
-                      FlatButton(onPressed: (){},
-                      child:Column(children:[
-                        Image.asset("./assets/images/telegram.png",height: 25,),
-                        Text("Telegram",style: TextStyle(fontSize:12 ),)
-                      ]),),
-                      FlatButton(onPressed: (){},
-                      child:Column(children:[
-                        Image.asset("./assets/images/whatsapp.png",height: 25,),
-                        Text("WhatsApp",style: TextStyle(fontSize:12 ),)
-                      ]),)
-                      
+                      FlatButton(
+                        onPressed: () {},
+                        child: Column(children: [
+                          Image.asset(
+                            "./assets/images/Attachment.png",
+                            height: 25,
+                          ),
+                          Text(
+                            "Share link",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ]),
+                      ),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Column(children: [
+                          Image.asset(
+                            "./assets/images/telegram.png",
+                            height: 25,
+                          ),
+                          Text(
+                            "Telegram",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ]),
+                      ),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Column(children: [
+                          Image.asset(
+                            "./assets/images/whatsapp.png",
+                            height: 25,
+                          ),
+                          Text(
+                            "WhatsApp",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ]),
+                      )
                     ],
                   )
                 ],

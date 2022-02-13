@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:newstoday/Screens/LandingPage.dart';
 
-class RadioGroup extends StatefulWidget {
+class LanguagePrefScreen extends StatefulWidget {
   @override
-  RadioGroupWidget createState() => RadioGroupWidget();
+  LanguagePrefScreenWidget createState() => LanguagePrefScreenWidget();
 }
  
 class NumberList {
   String lang;
   int index;
   NumberList({required this.lang, required this.index});
-  
+ 
 }
  
-class RadioGroupWidget extends State {
+class LanguagePrefScreenWidget extends State {
  
   String radioItemHolder = 'English'; 
   int id = 1;
@@ -55,38 +57,50 @@ class RadioGroupWidget extends State {
       lang:"ગુજરાતી"
     ),
     NumberList(
-      index:9,
+      index:10,
       lang:"ਪੰਜਾਬੀ"
     )
   ];
  
   Widget build(BuildContext context) {
-    return Column(
-        children: <Widget>[
-           Padding(
-            padding : EdgeInsets.all(14.0),
-            child: Text('Selected Item = '+'$radioItemHolder', style: TextStyle(fontSize: 23))
+    return Scaffold(
+      appBar: AppBar(title: Text("Language Preference"),automaticallyImplyLeading: false, ),
+      body: Column(
+          children: <Widget>[
+             Expanded(
+              child: Container(
+              height: 350.0,
+              child: Column(
+                children: 
+                  nList.map((data) => RadioListTile(
+                    title: Text("${data.lang}"),
+                    groupValue: id,
+                    value: data.index,
+                    onChanged: (val) {
+                      setState(() {
+                        radioItemHolder = data.lang ;
+                        id = data.index;
+                      });
+                    },
+                  )).toList(),
               ),
-           Expanded(
-            child: Container(
-            height: 350.0,
-            child: Column(
-              children: 
-                nList.map((data) => RadioListTile(
-                  title: Text("${data.lang}"),
-                  groupValue: id,
-                  value: data.index,
-                  onChanged: (val) {
-                    setState(() {
-                      radioItemHolder = data.lang ;
-                      id = data.index;
-                    });
+            )),
+            Container(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                child: GFButton(
+                  text: "Continue",
+                  color: Colors.lightGreen,
+                  shape: GFButtonShape.standard,
+                  blockButton: true,
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (contex)=>LandingPage()));
+                   
                   },
-                )).toList(),
-            ),
-          )),
-          
-        ],
+                )),            
+          ],
+      ),
+    
     );
   }
 }

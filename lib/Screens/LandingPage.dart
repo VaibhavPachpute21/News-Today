@@ -1,8 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:newstoday/Screens/Drawer.dart';
+import 'package:newstoday/Screens/SearchScreen.dart';
 import 'package:newstoday/Screens/screens/ArticlesScreen.dart';
+import 'package:newstoday/Screens/screens/BookmarkPage.dart';
 import 'package:newstoday/Screens/screens/HomeScreen.dart';
+import 'package:newstoday/Screens/screens/LanguagePreferenceScreen.dart';
+import 'package:newstoday/Screens/screens/NotificationScreen.dart';
 import 'package:newstoday/Services/Apis/Apis.dart';
 
 
@@ -59,17 +65,52 @@ class _HomeScreenState extends State<LandingPage> {
           IconButton(
             icon: const Icon(Icons.notifications),
             tooltip: 'Notification',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>NotificationScreen()) );
+            },
           ), //IconButton
           IconButton(
             icon: const Icon(Icons.search),
             tooltip: 'Search',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>NewsSearchScreen()) );
+            },
           ),
-          IconButton(
+          PopupMenuButton(
+
             icon: const Icon(Icons.more_vert),
             tooltip: 'More',
-            onPressed: () {},
+            itemBuilder: (contex){
+              return [
+                 PopupMenuItem(
+                    value: 'Bookmark',
+                    child: TextButton(onPressed:(){
+                      Navigator.pop(context);
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>BookmarksScreen()) );
+                    } ,child: Text("Bookmarks",style: TextStyle(color: Colors.black),),),
+                  ),
+                  PopupMenuItem(
+                    value: 'Language Preference',
+                    child: TextButton( onPressed:(){
+                      Navigator.pop(context);
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>LanguagePrefScreen()) );
+                    } ,child: Text("Language Preference",style: TextStyle(color: Colors.black),),),
+                  ),
+                  PopupMenuItem(
+                    value: 'Text Size',
+                    child:TextButton( onPressed:(){
+                      Navigator.pop(context);
+                    } ,child: Text("Text Size",style: TextStyle(color: Colors.black),),),
+                  ),
+                  PopupMenuItem(
+                    value: 'Settings',
+                    child:TextButton( onPressed:(){
+                      Navigator.pop(context);
+                    } ,child: Text("Settings",style: TextStyle(color: Colors.black),),),
+                  )
+              ];
+
+            },
           ), //IconButton
         ],
       ),
