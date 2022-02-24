@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:newstoday/Screens/screens/view_news.dart';
+import 'package:newstoday/Screens/HomeScreen/view_news.dart';
+
 import 'package:newstoday/globalData.dart' as global;
 
 class ListItem1<T> {
@@ -30,7 +31,7 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
   int groupValue = 0;
 
   String radioItemHolder = 'Vulgur content';
-  
+
   int id = 1;
 
   List<ReportReasonList> nList = [
@@ -64,7 +65,7 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
   }
 
   void populateData() {
-    for (int i = 0; i < global.headLines.length; i++) {
+    for (int i = 0; i < global.localLeadLines.length; i++) {
       list.add(ListItem1<String>("item $i"));
     }
   }
@@ -84,16 +85,22 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.black45)),
                   margin: const EdgeInsets.all(2.0),
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
                     e.urlToImage != null
                         ? Expanded(
-                            child: Image.network(
-                            e.urlToImage.toString(),
-                          ))
-                        : SizedBox(),
+                            child: ClipRRect(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                child: Image.network(
+                                  e.urlToImage.toString(),
+                                )),
+                          )
+                        : SizedBox(child: Image.asset("./assets/noimg.png")),
                     Container(
                       color: Colors.red,
                       child: Column(
@@ -105,85 +112,7 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
                                 color: Colors.white),
                             maxLines: 2,
                           ),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: list[global.localLeadLines.indexOf(e)]
-                                        .isSelected
-                                    ? Icon(Icons.bookmark_added_rounded,
-                                        size: 20, color: Colors.white)
-                                    : Icon(Icons.bookmark_border,
-                                        size: 20, color: Colors.white),
-                                tooltip: "Bookmark",
-                                onPressed: () {
-                                  setState(() {
-                                    list[global.localLeadLines.indexOf(e)]
-                                            .isSelected =
-                                        !list[global.localLeadLines.indexOf(e)]
-                                            .isSelected;
-                                    if (list[global.localLeadLines.indexOf(e)]
-                                            .isSelected ==
-                                        true) {
-                                      global.bookMarkedArticles.add(e);
-                                      print(global.bookMarkedArticles);
-                                    } else {
-                                      global.bookMarkedArticles.removeWhere(
-                                          (element) =>
-                                              element ==
-                                              global.headLines[global
-                                                  .localLeadLines
-                                                  .indexOf(e)]);
-                                      print(global.bookMarkedArticles);
-                                    }
-                                  });
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.share, color: Colors.white),
-                                onPressed: () {
-                                  sharePostBottomSheet();
-                                },
-                              ),
-                              PopupMenuButton(
-                                icon: Icon(Icons.more_vert_outlined,
-                                    color: Colors.white),
-                                itemBuilder: (context) {
-                                  return [
-                                    PopupMenuItem(
-                                      value: 'Not Interested',
-                                      child: TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          GFToast.showToast(
-                                              "Next time you'll see fewer such post",
-                                              context,
-                                              toastPosition:
-                                                  GFToastPosition.BOTTOM);
-                                        },
-                                        child: Text(
-                                          "Not Interested",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: 'Report',
-                                      child: TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          reportPostBottomSheet();
-                                        },
-                                        child: Text(
-                                          "Report",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                    ),
-                                  ];
-                                },
-                              )
-                            ],
-                          ),
+                          menusRowForNews(e)
                         ],
                       ),
                     )
@@ -192,6 +121,76 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
               ))
         ],
       ),
+    );
+  }
+
+  menusRowForNews(e) {
+    return Row(
+      children: [
+        IconButton(
+          icon: list[global.localLeadLines.indexOf(e)].isSelected
+              ? Icon(Icons.bookmark_added_rounded,
+                  size: 20, color: Colors.white)
+              : Icon(Icons.bookmark_border, size: 20, color: Colors.white),
+          tooltip: "Bookmark",
+          onPressed: () {
+            setState(() {
+              list[global.localLeadLines.indexOf(e)].isSelected =
+                  !list[global.localLeadLines.indexOf(e)].isSelected;
+              if (list[global.localLeadLines.indexOf(e)].isSelected == true) {
+                global.bookMarkedArticles.add(e);
+                print(global.bookMarkedArticles);
+              } else {
+                global.bookMarkedArticles.removeWhere((element) =>
+                    element ==
+                    global.headLines[global.localLeadLines.indexOf(e)]);
+                print(global.bookMarkedArticles);
+              }
+            });
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.share, color: Colors.white),
+          onPressed: () {
+            sharePostBottomSheet();
+          },
+        ),
+        PopupMenuButton(
+          icon: Icon(Icons.more_vert_outlined, color: Colors.white),
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                value: 'Not Interested',
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    GFToast.showToast(
+                        "Next time you'll see fewer such post", context,
+                        toastPosition: GFToastPosition.BOTTOM);
+                  },
+                  child: Text(
+                    "Not Interested",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
+              PopupMenuItem(
+                value: 'Report',
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    reportPostBottomSheet();
+                  },
+                  child: Text(
+                    "Report",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
+            ];
+          },
+        )
+      ],
     );
   }
 
@@ -317,7 +316,6 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
                           .toList(),
                     ),
                   )),
-                  
                   Container(
                       height: 50,
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -336,5 +334,4 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
           );
         });
   }
-
 }

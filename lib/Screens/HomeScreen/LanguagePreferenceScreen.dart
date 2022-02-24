@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:newstoday/Screens/LandingPage.dart';
+import 'package:newstoday/LandingPage.dart';
 
 class LanguagePrefScreen extends StatefulWidget {
   @override

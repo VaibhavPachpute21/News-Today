@@ -21,6 +21,7 @@ class NewsServices{
     final newsResponse = NewsResponse.fromJson(resp.body);
     global.searchNews.addAll(newsResponse.articles);
     print(global.searchNews);
+    return newsResponse.articles;
   
   }
 

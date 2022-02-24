@@ -1,12 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/button/gf_icon_button.dart';
-import 'package:getwidget/components/button/gf_social_button.dart';
-import 'package:newstoday/Screens/screens/view_news.dart';
-import 'package:newstoday/Services/Apis/Apis.dart';
+import 'package:newstoday/Screens/HomeScreen/view_news.dart';
 import 'package:newstoday/globalData.dart' as global;
 
 class ListItem<T> {
@@ -26,7 +21,6 @@ class _NewsHomeScreenState extends State<NewsHomeScreen> {
   List list = [];
   @override
   void initState() {
-    // TODO: implement initState
     populateData();
     super.initState();
   }
@@ -208,4 +202,5 @@ class _NewsHomeScreenState extends State<NewsHomeScreen> {
           );
         });
   }
+
 }

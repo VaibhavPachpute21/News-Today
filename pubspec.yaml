@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   getwidget: ^2.0.4
   http: ^0.13.4
+  material_design_icons_flutter:
+  google_fonts: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +65,7 @@ flutter:
   assets:
     - assets/flashImg.ico
     - assets/google.png
+    - assets/noimg.png
     - assets/images/
     
 
