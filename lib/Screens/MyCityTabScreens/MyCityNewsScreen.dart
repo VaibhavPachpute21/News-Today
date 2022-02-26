@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:newstoday/Screens/CategoryWiseNews.dart';
+import 'package:newstoday/Screens/MyCityTabScreens/CategoryWiseNews.dart';
 
 
 class MyCityNewsPage extends StatefulWidget {
@@ -59,7 +59,7 @@ class _MyCityNewsPageState
           body: TabBarView(
             // ignore: prefer_const_literals_to_create_immutables
             children: [
-              CatogoryWiseNewsScreen(category:"Cricket"),
+              CatogoryWiseNewsScreen(category:"Latest Cricket"),
               CatogoryWiseNewsScreen(category:"Technology"),
               CatogoryWiseNewsScreen(category:"Covid-19"),
               CatogoryWiseNewsScreen(category:"Politics"),

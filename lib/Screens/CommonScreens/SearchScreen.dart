@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/search_bar/gf_search_bar.dart';
-import 'package:newstoday/Screens/HomeScreen/view_news.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:newstoday/Screens/view_news.dart';
 
 import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/globalData.dart' as global;
@@ -40,6 +41,8 @@ class _NewsSearchScreenState extends State<NewsSearchScreen> {
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                         hintText: "Search",
+                        counterStyle:TextStyle(color: Colors.white) ,
+                        labelStyle:TextStyle(color: Colors.white) ,
                         hintStyle: TextStyle(color: Colors.white),
                         fillColor: Colors.white),
                     autofocus: true,
@@ -50,7 +53,13 @@ class _NewsSearchScreenState extends State<NewsSearchScreen> {
                       isSearching=true;
                       global.searchNews = [];
                     });
-                    await NewsServices().getSearchNews(searchController.text);
+                    if(searchController.value !=null && searchController.text !='' ){
+                      await NewsServices().getSearchNews(searchController.text);
+                    }else{
+                      GFToast.showToast("Please enter query", context);
+                    }
+                    
+                    
                     print(searchController.text);
                     setState(() {
                       isSearching=false;

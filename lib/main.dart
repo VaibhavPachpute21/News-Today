@@ -1,8 +1,14 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:newstoday/Screens/LandingPage.dart';
+import 'package:newstoday/Screens/CommonScreens/LanguagePreferenceScreen.dart';
 import 'package:newstoday/Screens/auth/login.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -30,7 +36,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3),
-        () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const LoginScreen())));
+        () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen())));
   }
 
   @override

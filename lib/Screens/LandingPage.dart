@@ -1,19 +1,20 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
-import 'package:newstoday/Screens/CommonWidgets.dart';
-import 'package:newstoday/Screens/Drawer.dart';
-import 'package:newstoday/Screens/HomeScreen/ArticlesScreen.dart';
-import 'package:newstoday/Screens/HomeScreen/BookmarkPage.dart';
+import 'package:newstoday/Screens/CommonScreens/Drawer.dart';
+import 'package:newstoday/Screens/ArticlesScreen.dart';
+import 'package:newstoday/Screens/CommonScreens/BookmarkPage.dart';
 import 'package:newstoday/Screens/HomeScreen/HomeScreen.dart';
-import 'package:newstoday/Screens/HomeScreen/LanguagePreferenceScreen.dart';
-import 'package:newstoday/Screens/HomeScreen/LiveNewsScreen.dart';
-import 'package:newstoday/Screens/HomeScreen/NotificationScreen.dart';
-import 'package:newstoday/Screens/MyCityNewsScreen.dart';
-import 'package:newstoday/Screens/SearchScreen.dart';
+import 'package:newstoday/Screens/CommonScreens/LanguagePreferenceScreen.dart';
+import 'package:newstoday/Screens/LiveNewsScreen.dart';
+import 'package:newstoday/Screens/CommonScreens/NotificationScreen.dart';
+import 'package:newstoday/Screens/MyCityTabScreens/MyCityNewsScreen.dart';
+import 'package:newstoday/Screens/CommonScreens/SearchScreen.dart';
 
 import 'package:newstoday/Services/Apis/Apis.dart';
+import 'package:newstoday/Services/Models/userModal.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -22,11 +23,16 @@ class LandingPage extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<LandingPage> {
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
   int _selectedIndex = 0;
   bool isLoading = true;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   final List<Widget> _widgetOption = [
-    const NewsHomeScreen(),
-    const NewsArticlesScreen(),
+    NewsHomeScreen(),
+    NewsArticlesScreen(),
     MyCityNewsPage(),
     LiveNewsPage()
   ];
@@ -40,9 +46,22 @@ class _HomeScreenState extends State<LandingPage> {
   init() async {
     await NewsServices().getEverything();
     await NewsServices().getLocalData();
+
     setState(() {
       isLoading = false;
     });
+    try {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(user!.uid)
+          .get()
+          .then((value) {
+        this.loggedInUser = UserModel.fromMap(value.data());
+        setState(() {});
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _onItemTapped(int index) {
@@ -62,8 +81,10 @@ class _HomeScreenState extends State<LandingPage> {
           // ignore: prefer_const_literals_to_create_immutables
           children: [
             const Text("Welcome,"),
-            const Text(
-              "Carol Collins",
+            Text(
+              loggedInUser.firstName == null
+                  ? ""
+                  : loggedInUser.firstName.toString(),
               style: TextStyle(fontSize: 14),
             )
           ],
@@ -130,7 +151,7 @@ class _HomeScreenState extends State<LandingPage> {
           ), //IconButton
         ],
       ),
-      
+
       drawer: MyDrawer(),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:newstoday/Screens/HomeScreen/HomeScreen.dart';
-import 'package:newstoday/Screens/HomeScreen/view_news.dart';
+import 'package:newstoday/Screens/view_news.dart';
 import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/Services/Models/NewsModel.dart';
 import 'package:newstoday/globalData.dart' as global;
@@ -17,7 +17,7 @@ class _LiveNewsPageState extends State<LiveNewsPage> {
 
   List list = [];
   bool isLoading=true;
-  List<Article> feedNews=[];
+  List<Article> liveNews=[];
 
 @override
   void initState() {
@@ -27,7 +27,7 @@ class _LiveNewsPageState extends State<LiveNewsPage> {
 
 init() async {
  final resp=await NewsServices().getSearchNews("Live");
- feedNews.addAll(resp);
+ liveNews.addAll(resp);
  populateData();
  setState(() {
    isLoading=false;
@@ -36,7 +36,7 @@ init() async {
 }
 
  void populateData() {
-    for (int i = 0; i < feedNews.length; i++){
+    for (int i = 0; i < liveNews.length; i++){
        list.add(ListItem<String>("item $i"));
     }
   }
@@ -50,7 +50,7 @@ init() async {
         child: CircularProgressIndicator(),
       ),
     ): ListView.builder(
-          itemCount: feedNews.length,
+          itemCount: liveNews.length,
           itemBuilder: (context, index) {
             return Container(
                 padding: const EdgeInsets.all(2),
@@ -60,7 +60,7 @@ init() async {
                     borderRadius: BorderRadius.circular(1)),
                 child: InkWell(
                   onTap: () {
-                    var news = feedNews[index];
+                    var news = liveNews[index];
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -68,10 +68,10 @@ init() async {
                   },
                   child: Column(
                     children: [
-                      feedNews[index].urlToImage != null
+                      liveNews[index].urlToImage != null
                           ? SizedBox(
                               child: Image.network(
-                                feedNews[index].urlToImage.toString(),
+                                liveNews[index].urlToImage.toString(),
                               ),
                             )
                           : const SizedBox(),
@@ -80,7 +80,7 @@ init() async {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.70,
                             child: Text(
-                              feedNews[index].title.toString(),
+                              liveNews[index].title.toString(),
                               style: const TextStyle(
                                   overflow: TextOverflow.ellipsis),
                               maxLines: 2,
@@ -104,11 +104,11 @@ init() async {
                                 setState(() {
                                  list[index].isSelected = !list[index].isSelected;
                                  if(list[index].isSelected==true){
-                                   global.bookMarkedArticles.add(feedNews[index]);
+                                   global.bookMarkedArticles.add(liveNews[index]);
                                    print(global.bookMarkedArticles);
                                  }else{
                                    global.bookMarkedArticles.removeWhere((element) => 
-                                     element==feedNews[index]
+                                     element==liveNews[index]
                                    );
                                    print(global.bookMarkedArticles);
                                  }

@@ -187,8 +187,6 @@ class _SingleNewsScreenState extends State<SingleNewsScreen> {
 }
 
 
-
-
 class NewsFeedScreen extends StatefulWidget {
   @override
   _NewsFeedScreenState createState() => _NewsFeedScreenState();

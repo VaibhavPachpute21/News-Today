@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:newstoday/Screens/HomeScreen/view_news.dart';
+import 'package:newstoday/Screens/view_news.dart';
 import 'package:newstoday/globalData.dart' as global;
 
 class ListItem<T> {

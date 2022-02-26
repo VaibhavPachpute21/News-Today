@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:newstoday/Screens/ArticlesScreen.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({ Key? key }) : super(key: key);
@@ -12,8 +14,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Notifications"),),
-      body: SafeArea(child: Center(
-        child: Text("Your Notification will appear here!"),
+      body: SafeArea(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Icon(Icons.notifications, size: 85,),
+          ),
+          Center(
+            child: Text("No notifications"),
+          ),
+        ],
       )),      
     );
   }
