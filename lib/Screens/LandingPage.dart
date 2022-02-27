@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:newstoday/Screens/CommonScreens/Drawer.dart';
 import 'package:newstoday/Screens/ArticlesScreen.dart';
 import 'package:newstoday/Screens/CommonScreens/BookmarkPage.dart';
@@ -12,6 +16,7 @@ import 'package:newstoday/Screens/LiveNewsScreen.dart';
 import 'package:newstoday/Screens/CommonScreens/NotificationScreen.dart';
 import 'package:newstoday/Screens/MyCityTabScreens/MyCityNewsScreen.dart';
 import 'package:newstoday/Screens/CommonScreens/SearchScreen.dart';
+import 'package:newstoday/Screens/WebViewNewsPage.dart';
 
 import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/Services/Models/userModal.dart';
@@ -44,8 +49,17 @@ class _HomeScreenState extends State<LandingPage> {
   }
 
   init() async {
-    await NewsServices().getEverything();
-    await NewsServices().getLocalData();
+    try{
+      await NewsServices().getEverything();
+      await NewsServices().getLocalData();
+    }on SocketException catch(e){
+      setState(() {
+        GFToast.showToast("Please check your internet connection", context,
+        toastPosition: GFToastPosition.CENTER,backgroundColor: Colors.white,
+        textStyle: TextStyle(color: Colors.black));
+      });
+    }
+    
 
     setState(() {
       isLoading = false;
@@ -145,7 +159,13 @@ class _HomeScreenState extends State<LandingPage> {
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                PopupMenuItem(value: 'Settings', child: Text("Settings"))
+                PopupMenuItem(value: 'Settings', 
+                child: InkWell(
+                  onTap:(){
+                    Navigator.pop(context);
+                        
+                  },
+                  child: Text("Settings")))
               ];
             },
           ), //IconButton

@@ -36,7 +36,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3),
-        () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen())));
+        () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirebaseAuth.instance.currentUser ==null? LoginScreen():LandingPage())));
   }
 
   @override

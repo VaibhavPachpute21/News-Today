@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:newstoday/Screens/WebViewNewsPage.dart';
 import 'package:newstoday/Services/Models/NewsModel.dart';
 
 class ShowNews extends StatefulWidget {
@@ -16,7 +21,7 @@ class _ShowNewsState extends State<ShowNews> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("News"),
+        title: Text("News Today"),automaticallyImplyLeading: false,
       ),
       body: ListView(
         children: [
@@ -87,10 +92,26 @@ class _ShowNewsState extends State<ShowNews> {
                     : "",
                     maxLines: 100,
                 style: TextStyle(color: Colors.black, fontSize: 18),
-              )
+              ),
+              
+
                 ],
               )),
-        
+       
+        widget.news.url !=null ? 
+        Container(
+          padding: EdgeInsets.only(left: 10,right: 10),
+            child: GFButton(textStyle: TextStyle(fontWeight: FontWeight.w500,overflow: TextOverflow.fade ),
+            shape: GFButtonShape.standard,
+            color: Colors.red.shade400,            
+            text:"Read whole article at ${widget.news.source.name}",
+          
+            onPressed: (){
+              Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WebViewNewsPage(postUrl:widget.news.url )));
+            })):SizedBox()
         ],
       ),
     );
