@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:newstoday/Screens/view_news.dart';
+import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/globalData.dart' as global;
 
 class ListItem<T> {
@@ -19,11 +20,20 @@ class NewsHomeScreen extends StatefulWidget {
 
 class _NewsHomeScreenState extends State<NewsHomeScreen> {
   List list = [];
+  bool isLoading=true;
   @override
   void initState() {
-    populateData();
+   init(); 
     super.initState();
   }
+
+init() async {
+await NewsServices().getEverything();
+populateData();
+setState(() {
+      isLoading = false;
+    });
+}
 
   void populateData() {
     for (int i = 0; i < global.headLines.length; i++){
@@ -33,7 +43,11 @@ class _NewsHomeScreenState extends State<NewsHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
         child: ListView.builder(
             padding: const EdgeInsets.all(1),
             itemCount: global.headLines.length,

@@ -244,7 +244,21 @@ final defaultSizedBox=SizedBox(height: 5,);
                   ],
                 ),
               ),
-              
+              FirebaseAuth.instance.currentUser==null?Container(
+                margin: EdgeInsets.only(top: 10),
+                child: GFButton(
+                  color: Colors.transparent,
+                  child:Row(children: [
+                    Icon(Icons.login),
+                    SizedBox(width: 3,),
+                    Text("Login",style: h2TextStyle,)
+                  ],) ,
+                    onPressed: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginScreen()));
+                      setState(() {});
+                    },
+                    ),
+              ):
               Container(
                 margin: EdgeInsets.only(top: 10),
                 child: GFButton(
