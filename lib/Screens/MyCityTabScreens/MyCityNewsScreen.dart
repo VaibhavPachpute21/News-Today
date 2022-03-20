@@ -21,7 +21,7 @@ class _MyCityNewsPageState
   Widget build(BuildContext context) {
     return Scaffold(
       body: DefaultTabController(
-        length: 4,
+        length: 5,
         initialIndex: 0,
         child: Scaffold(
           appBar: AppBar(
@@ -36,7 +36,7 @@ class _MyCityNewsPageState
                   tabs: [
                     Tab(
                         child: Text(
-                      "Cricket",
+                      "Sports",
                     )),
                     Tab(
                         child: Text(
@@ -44,11 +44,15 @@ class _MyCityNewsPageState
                     )),
                     Tab(
                         child: Text(
-                      "Covid-19",
+                      "Health",
                     )),
                     Tab(
                         child: Text(
-                      "Politics",
+                      "Business",
+                    )),
+                    Tab(
+                        child: Text(
+                      "Entertainment",
                     )),
                     
                   ],
@@ -59,10 +63,11 @@ class _MyCityNewsPageState
           body: TabBarView(
             // ignore: prefer_const_literals_to_create_immutables
             children: [
-              CatogoryWiseNewsScreen(category:"Latest Cricket"),
-              CatogoryWiseNewsScreen(category:"Technology"),
-              CatogoryWiseNewsScreen(category:"Covid-19"),
-              CatogoryWiseNewsScreen(category:"Politics"),
+              CatogoryWiseNewsScreen(category:"sports"),
+              CatogoryWiseNewsScreen(category:"technology"),
+              CatogoryWiseNewsScreen(category:"health"),
+              CatogoryWiseNewsScreen(category:"business"),
+              CatogoryWiseNewsScreen(category:"entertainment")
             ],
           ),
         ),

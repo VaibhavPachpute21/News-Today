@@ -10,26 +10,37 @@ class NewsServices{
   final _apiKey="022048e8ef234980a069fa73c04d1c15";
   
   getSearchNews(String query) async {
-
     final url = Uri.https(baseUrl, 'v2/everything', {
       'apiKey': _apiKey,
       'q': query,
     });
     final resp = await http.get(url);
-
     print(resp.statusCode);
     final newsResponse = NewsResponse.fromJson(resp.body);
     global.searchNews.addAll(newsResponse.articles);
     print(global.searchNews);
     return newsResponse.articles;
-  
   }
 
-  getEverything() async {
-
+  categoryNews(String query) async {
     final url = Uri.https(baseUrl, 'v2/top-headlines', {
       'apiKey': _apiKey,
-      'country': 'us',
+      'language': 'en',
+      "category":"$query"
+    });
+    final resp = await http.get(url);
+    print(resp.statusCode);
+    final newsResponse = NewsResponse.fromJson(resp.body);
+    global.searchNews.addAll(newsResponse.articles);
+    print(global.searchNews);
+    return newsResponse.articles;
+  }
+
+  home() async {
+    final url = Uri.https(baseUrl, 'v2/top-headlines', {
+      'apiKey': _apiKey,
+      'country': 'in',
+      "category":"general"
     });
     final resp = await http.get(url);
     if(resp.statusCode==200){
@@ -38,7 +49,6 @@ class NewsServices{
       print(global.headLines);
       return newsResponse.articles;
     }
-    
   
   }
 

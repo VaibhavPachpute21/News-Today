@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:newstoday/Screens/HomeScreen/HomeScreen.dart';
@@ -7,141 +9,138 @@ import 'package:newstoday/Services/Models/NewsModel.dart';
 import 'package:newstoday/globalData.dart' as global;
 
 class LiveNewsPage extends StatefulWidget {
-  const LiveNewsPage({ Key? key }) : super(key: key);
+  const LiveNewsPage({Key? key}) : super(key: key);
 
   @override
   _LiveNewsPageState createState() => _LiveNewsPageState();
 }
 
 class _LiveNewsPageState extends State<LiveNewsPage> {
-
   List list = [];
-  bool isLoading=true;
-  List<Article> liveNews=[];
+  bool isLoading = true;
+  List<Article> liveNews = [];
 
-@override
+  @override
   void initState() {
     init();
     super.initState();
   }
 
-init() async {
- final resp=await NewsServices().getSearchNews("Live");
- liveNews.addAll(resp);
- populateData();
- setState(() {
-   isLoading=false;
- });
+  init() async {
+    final resp = await NewsServices().getSearchNews("Live");
+    liveNews.addAll(resp);
+    populateData();
+    setState(() {
+      isLoading = false;
+    });
+  }
 
-}
-
- void populateData() {
-    for (int i = 0; i < liveNews.length; i++){
-       list.add(ListItem<String>("item $i"));
+  void populateData() {
+    for (int i = 0; i < liveNews.length; i++) {
+      list.add(ListItem<String>("item $i"));
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
- return SafeArea(
-      child:isLoading?Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    ): ListView.builder(
-          itemCount: liveNews.length,
-          itemBuilder: (context, index) {
-            return Container(
-                padding: const EdgeInsets.all(2),
-                margin: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(1)),
-                child: InkWell(
-                  onTap: () {
-                    var news = liveNews[index];
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ShowNews(news: news)));
-                  },
-                  child: Column(
-                    children: [
-                      liveNews[index].urlToImage != null
-                          ? SizedBox(
-                              child: Image.network(
-                                liveNews[index].urlToImage.toString(),
+    return SafeArea(
+      child: isLoading
+          ? Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : ListView.builder(
+              itemCount: liveNews.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: const EdgeInsets.all(2),
+                  margin: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(1)),
+                  child: InkWell(
+                    onTap: () {
+                      var news = liveNews[index];
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShowNews(news: news)));
+                    },
+                    child: Column(
+                      children: [
+                        liveNews[index].urlToImage != null
+                            ? SizedBox(
+                                child: Image.network(
+                                  liveNews[index].urlToImage.toString(),
+                                ),
+                              )
+                            : const SizedBox(),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.70,
+                              child: Text(
+                                liveNews[index].title.toString(),
+                                style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis),
+                                maxLines: 2,
+                              ),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.13,
+                              //height: MediaQuery.of(context).size.height * 0.025,
+                              child: IconButton(
+                                icon: list[index].isSelected
+                                    ? Icon(
+                                        Icons.bookmark_added_rounded,
+                                        size: 20,
+                                      )
+                                    : Icon(
+                                        Icons.bookmark_border,
+                                        size: 20,
+                                      ),
+                                tooltip: "Bookmark",
+                                onPressed: () {
+                                  setState(() {
+                                    list[index].isSelected =
+                                        !list[index].isSelected;
+                                    if (list[index].isSelected == true) {
+                                      global.bookMarkedArticles
+                                          .add(liveNews[index]);
+                                      print(global.bookMarkedArticles);
+                                    } else {
+                                      global.bookMarkedArticles.removeWhere(
+                                          (element) =>
+                                              element == liveNews[index]);
+                                      print(global.bookMarkedArticles);
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.13,
+                              // height: MediaQuery.of(context).size.height * 0.025,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.share,
+                                  size: 20,
+                                ),
+                                tooltip: "Share",
+                                onPressed: () {
+                                  showBottomSheet();
+                                },
                               ),
                             )
-                          : const SizedBox(),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.70,
-                            child: Text(
-                              liveNews[index].title.toString(),
-                              style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis),
-                              maxLines: 2,
-                            ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.13,
-                            //height: MediaQuery.of(context).size.height * 0.025,
-                            child: IconButton(
-                              icon: list[index].isSelected
-                                  ? Icon(
-                                      Icons.bookmark_added_rounded,
-                                      size: 20,
-                                    )
-                                  : Icon(
-                                      Icons.bookmark_border,
-                                      size: 20,
-                                    ),
-                              tooltip: "Bookmark",
-                              onPressed: () {
-                                setState(() {
-                                 list[index].isSelected = !list[index].isSelected;
-                                 if(list[index].isSelected==true){
-                                   global.bookMarkedArticles.add(liveNews[index]);
-                                   print(global.bookMarkedArticles);
-                                 }else{
-                                   global.bookMarkedArticles.removeWhere((element) => 
-                                     element==liveNews[index]
-                                   );
-                                   print(global.bookMarkedArticles);
-                                 }
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.13,
-                            // height: MediaQuery.of(context).size.height * 0.025,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.share,
-                                size: 20,
-                              ),
-                              tooltip: "Share",
-                              onPressed: () {
-                                showBottomSheet();
-                              },
-                            ),
-                          )
-                        ],
-                      )
-                    ],
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              );
-          
-          }),
-    
+                );
+              }),
     );
- 
-  
   }
 
   showBottomSheet() {
@@ -220,5 +219,4 @@ init() async {
           );
         });
   }
-
 }

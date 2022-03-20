@@ -28,7 +28,7 @@ class _NewsHomeScreenState extends State<NewsHomeScreen> {
   }
 
 init() async {
-await NewsServices().getEverything();
+await NewsServices().home();
 populateData();
 setState(() {
       isLoading = false;

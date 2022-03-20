@@ -30,7 +30,7 @@ class _CatogoryWiseNewsScreenState extends State<CatogoryWiseNewsScreen> {
   }
 
   init() async {
-    final resp = await NewsServices().getSearchNews(widget.category);
+    final resp = await NewsServices().categoryNews(widget.category);
     feedNews.addAll(resp);
     populateData();
     setState(() {

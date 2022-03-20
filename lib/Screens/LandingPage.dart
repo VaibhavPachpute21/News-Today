@@ -50,7 +50,7 @@ class _HomeScreenState extends State<LandingPage> {
 
   init() async {
     try{
-      await NewsServices().getEverything();
+      await NewsServices().home();
       await NewsServices().getLocalData();
     }on SocketException catch(e){
       setState(() {
