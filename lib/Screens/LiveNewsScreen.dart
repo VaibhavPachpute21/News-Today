@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:newstoday/Screens/CommonScreens/CommonWidgets.dart';
 import 'package:newstoday/Screens/HomeScreen/HomeScreen.dart';
 import 'package:newstoday/Screens/view_news.dart';
 import 'package:newstoday/Services/Apis/Apis.dart';
@@ -47,7 +47,7 @@ class _LiveNewsPageState extends State<LiveNewsPage> {
       child: isLoading
           ? Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: LoadingScreen(),
               ),
             )
           : ListView.builder(

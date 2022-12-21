@@ -3,15 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:newstoday/Screens/MyCityTabScreens/CategoryWiseNews.dart';
 
-
 class MyCityNewsPage extends StatefulWidget {
   @override
-  _MyCityNewsPageState createState() =>
-      _MyCityNewsPageState();
+  _MyCityNewsPageState createState() => _MyCityNewsPageState();
 }
 
-class _MyCityNewsPageState
-    extends State<MyCityNewsPage> {
+class _MyCityNewsPageState extends State<MyCityNewsPage> {
   @override
   void initState() {
     super.initState();
@@ -25,7 +22,6 @@ class _MyCityNewsPageState
         initialIndex: 0,
         child: Scaffold(
           appBar: AppBar(
-          
             automaticallyImplyLeading: false,
             flexibleSpace: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -54,7 +50,6 @@ class _MyCityNewsPageState
                         child: Text(
                       "Entertainment",
                     )),
-                    
                   ],
                 )
               ],
@@ -63,16 +58,15 @@ class _MyCityNewsPageState
           body: TabBarView(
             // ignore: prefer_const_literals_to_create_immutables
             children: [
-              CatogoryWiseNewsScreen(category:"sports"),
-              CatogoryWiseNewsScreen(category:"technology"),
-              CatogoryWiseNewsScreen(category:"health"),
-              CatogoryWiseNewsScreen(category:"business"),
-              CatogoryWiseNewsScreen(category:"entertainment")
+              CatogoryWiseNewsScreen(category: "sports"),
+              CatogoryWiseNewsScreen(category: "technology"),
+              CatogoryWiseNewsScreen(category: "health"),
+              CatogoryWiseNewsScreen(category: "business"),
+              CatogoryWiseNewsScreen(category: "entertainment")
             ],
           ),
         ),
       ),
     );
   }
-
 }

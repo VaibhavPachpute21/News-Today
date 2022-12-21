@@ -49,17 +49,17 @@ class _HomeScreenState extends State<LandingPage> {
   }
 
   init() async {
-    try{
+    try {
       await NewsServices().home();
       await NewsServices().getLocalData();
-    }on SocketException catch(e){
+    } on SocketException catch (e) {
       setState(() {
         GFToast.showToast("Please check your internet connection", context,
-        toastPosition: GFToastPosition.CENTER,backgroundColor: Colors.white,
-        textStyle: TextStyle(color: Colors.black));
+            toastPosition: GFToastPosition.CENTER,
+            backgroundColor: Colors.white,
+            textStyle: TextStyle(color: Colors.black));
       });
     }
-    
 
     setState(() {
       isLoading = false;
@@ -159,13 +159,13 @@ class _HomeScreenState extends State<LandingPage> {
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                PopupMenuItem(value: 'Settings', 
-                child: InkWell(
-                  onTap:(){
-                    Navigator.pop(context);
-                        
-                  },
-                  child: Text("Settings")))
+                PopupMenuItem(
+                    value: 'Settings',
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Settings")))
               ];
             },
           ), //IconButton

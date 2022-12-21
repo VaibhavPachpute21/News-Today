@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:newstoday/Screens/CommonScreens/CommonWidgets.dart';
 import 'package:newstoday/Screens/view_news.dart';
 import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/globalData.dart' as global;
@@ -31,7 +32,7 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
   List list = [];
   int groupValue = 0;
   String radioItemHolder = 'Vulgur content';
-   int id =10;
+  int id = 10;
   bool isLoading = true;
 
   List<ReportReasonList> nList = [
@@ -64,6 +65,7 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
   }
 
   init() async {
+    print("article");
     await NewsServices().getLocalData();
     populateData();
     setState(() {
@@ -72,7 +74,7 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
   }
 
   void populateData() {
-    for (int i = 0; i < global.localLeadLines.length; i++) {
+    for (int i = 0; i < global.localHeadLines.length; i++) {
       list.add(ListItem1<String>("item $i"));
     }
   }
@@ -82,13 +84,13 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
     return Scaffold(
       body: isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: LoadingScreen(),
             )
           : SafeArea(
               child: GridView.count(
                 crossAxisCount: 2,
                 children: [
-                  ...global.localLeadLines.map((e) => InkWell(
+                  ...global.localHeadLines.map((e) => InkWell(
                         onTap: () {
                           Navigator.push(
                               context,
@@ -130,7 +132,7 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
                                   Row(
                                     children: [
                                       IconButton(
-                                        icon: list[global.localLeadLines
+                                        icon: list[global.localHeadLines
                                                     .indexOf(e)]
                                                 .isSelected
                                             ? Icon(Icons.bookmark_added_rounded,
@@ -140,13 +142,13 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
                                         tooltip: "Bookmark",
                                         onPressed: () {
                                           setState(() {
-                                            list[global.localLeadLines
+                                            list[global.localHeadLines
                                                     .indexOf(e)]
                                                 .isSelected = !list[global
-                                                    .localLeadLines
+                                                    .localHeadLines
                                                     .indexOf(e)]
                                                 .isSelected;
-                                            if (list[global.localLeadLines
+                                            if (list[global.localHeadLines
                                                         .indexOf(e)]
                                                     .isSelected ==
                                                 true) {
@@ -157,7 +159,7 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
                                                   .removeWhere((element) =>
                                                       element ==
                                                       global.headLines[global
-                                                          .localLeadLines
+                                                          .localHeadLines
                                                           .indexOf(e)]);
                                               print(global.bookMarkedArticles);
                                             }
@@ -348,7 +350,6 @@ class _NewsArticlesScreenState extends State<NewsArticlesScreen> {
                                   },
                                 ))
                             .toList(),
-
                       ),
                     )),
                     Container(

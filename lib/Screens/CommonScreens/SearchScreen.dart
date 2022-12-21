@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/search_bar/gf_search_bar.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:newstoday/Screens/view_news.dart';
-
 import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/globalData.dart' as global;
 

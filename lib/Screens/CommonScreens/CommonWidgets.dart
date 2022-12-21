@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 
 
@@ -348,4 +349,69 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
     );
   
   }
+}
+
+class ErrorPage extends StatefulWidget {
+  const ErrorPage({Key? key}) : super(key: key);
+
+  @override
+  State<ErrorPage> createState() => _ErrorPageState();
+}
+
+class _ErrorPageState extends State<ErrorPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      body: Center(child: Image.asset("./assets/images/error.png",fit: BoxFit.fitWidth,)),
+    );
+  }
+}
+
+
+class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({ Key? key }) : super(key: key);
+
+  @override
+  State<LoadingScreen> createState() => _LoadingScreenState();
+}
+
+class _LoadingScreenState extends State<LoadingScreen> {
+  int timer = 800, offset = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: loadingWidget(),);
+  }
+
+  Widget loadingWidget() {
+    return GridView.builder(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200, crossAxisSpacing: 20, mainAxisSpacing: 20),
+        itemCount: 8,
+        itemBuilder: (BuildContext ctx, index) {
+          offset += 50;
+          timer = 800 + offset;
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.white,
+              period: Duration(milliseconds: timer),
+              child: box(),
+            ),
+          );
+        });
+  }
+
+  Widget box() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      height: 300,
+      width: 100,
+      color: Colors.grey,
+    );
+  }
+
+
 }

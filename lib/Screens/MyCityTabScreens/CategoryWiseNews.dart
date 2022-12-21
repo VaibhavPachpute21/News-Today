@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:newstoday/Screens/CommonScreens/CommonWidgets.dart';
 import 'package:newstoday/Screens/view_news.dart';
 import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/Services/Models/NewsModel.dart';
@@ -50,7 +51,7 @@ class _CatogoryWiseNewsScreenState extends State<CatogoryWiseNewsScreen> {
       child: isLoading
           ? Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: LoadingScreen(),
               ),
             )
           : ListView.builder(

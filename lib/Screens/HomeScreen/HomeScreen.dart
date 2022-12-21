@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:newstoday/Screens/CommonScreens/CommonWidgets.dart';
 import 'package:newstoday/Screens/view_news.dart';
 import 'package:newstoday/Services/Apis/Apis.dart';
 import 'package:newstoday/globalData.dart' as global;
+import 'package:shimmer/shimmer.dart';
 
 class ListItem<T> {
   bool isSelected = false; //Selection property to highlight or not
@@ -20,34 +22,45 @@ class NewsHomeScreen extends StatefulWidget {
 
 class _NewsHomeScreenState extends State<NewsHomeScreen> {
   List list = [];
-  bool isLoading=true;
+  bool isLoading = true;
+
   @override
   void initState() {
-   init(); 
+    init();
     super.initState();
   }
 
-init() async {
-await NewsServices().home();
-populateData();
-setState(() {
+  init() async {
+    setState(() {
+      list = [];
+    });
+
+    await NewsServices().home();
+    populateData();
+    setState(() {
       isLoading = false;
     });
-}
+  }
 
   void populateData() {
-    for (int i = 0; i < global.headLines.length; i++){
-       list.add(ListItem<String>("item $i"));
+    for (int i = 0; i < global.headLines.length; i++) {
+      list.add(ListItem<String>("item $i"));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : SafeArea(
+        ? Center(
+            child: LoadingScreen(),
+          )
+        : list.isNotEmpty
+            ? newsCard()
+            : ErrorPage();
+  }
+
+  Widget newsCard() {
+    return SafeArea(
         child: ListView.builder(
             padding: const EdgeInsets.all(1),
             itemCount: global.headLines.length,
@@ -74,7 +87,10 @@ setState(() {
                                 global.headLines[index].urlToImage.toString(),
                               ),
                             )
-                          : const SizedBox(),
+                          : Image.asset(
+                              "./assets/images/noimage.png",
+                              height: 200,
+                            ),
                       Row(
                         children: [
                           SizedBox(
@@ -102,16 +118,18 @@ setState(() {
                               tooltip: "Bookmark",
                               onPressed: () {
                                 setState(() {
-                                 list[index].isSelected = !list[index].isSelected;
-                                 if(list[index].isSelected==true){
-                                   global.bookMarkedArticles.add(global.headLines[index]);
-                                   print(global.bookMarkedArticles);
-                                 }else{
-                                   global.bookMarkedArticles.removeWhere((element) => 
-                                     element==global.headLines[index]
-                                   );
-                                   print(global.bookMarkedArticles);
-                                 }
+                                  list[index].isSelected =
+                                      !list[index].isSelected;
+                                  if (list[index].isSelected == true) {
+                                    global.bookMarkedArticles
+                                        .add(global.headLines[index]);
+                                    print(global.bookMarkedArticles);
+                                  } else {
+                                    global.bookMarkedArticles.removeWhere(
+                                        (element) =>
+                                            element == global.headLines[index]);
+                                    print(global.bookMarkedArticles);
+                                  }
                                 });
                               },
                             ),
@@ -136,7 +154,6 @@ setState(() {
                   ),
                 ),
               );
-          
             }));
   }
 
@@ -216,5 +233,4 @@ setState(() {
           );
         });
   }
-
 }

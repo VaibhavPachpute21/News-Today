@@ -21,7 +21,8 @@ class _ShowNewsState extends State<ShowNews> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("News Today"),automaticallyImplyLeading: false,
+        title: Text("News Today"),
+        automaticallyImplyLeading: false,
       ),
       body: ListView(
         children: [
@@ -32,7 +33,6 @@ class _ShowNewsState extends State<ShowNews> {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Column(
-
                 children: [
                   Text(
                     widget.news.title,
@@ -41,9 +41,12 @@ class _ShowNewsState extends State<ShowNews> {
                       fontSize: 20,
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.end,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(widget.news.source.name.toString(),),
+                      Text(
+                        widget.news.source.name.toString(),
+                      ),
                     ],
                   ),
                   Row(
@@ -64,11 +67,14 @@ class _ShowNewsState extends State<ShowNews> {
           ),
           widget.news.urlToImage != null
               ? Container(
-                padding: EdgeInsets.all(5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Image.network(widget.news.urlToImage.toString())))
-              : SizedBox(),
+                  padding: EdgeInsets.all(5),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.network(widget.news.urlToImage.toString())))
+              : Image.asset(
+                  "./assets/images/noimage.png",
+                  height: 200,
+                ),
           SizedBox(
             height: 5,
           ),
@@ -77,41 +83,44 @@ class _ShowNewsState extends State<ShowNews> {
               color: Colors.grey.shade100,
               child: Column(
                 children: [
-                  Text(                    
+                  Text(
                     widget.news.description.toString(),
-                     maxLines: 100,
+                    maxLines: 100,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(height: 4,),
+                  SizedBox(
+                    height: 4,
+                  ),
                   Text(
-                widget.news.content != null
-                    ? widget.news.content.toString()
-                    : "",
+                    widget.news.content != null
+                        ? widget.news.content.toString()
+                        : "",
                     maxLines: 100,
-                style: TextStyle(color: Colors.black, fontSize: 18),
-              ),
-              
-
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
                 ],
               )),
-       
-        widget.news.url !=null ? 
-        Container(
-          padding: EdgeInsets.only(left: 10,right: 10),
-            child: GFButton(textStyle: TextStyle(fontWeight: FontWeight.w500,overflow: TextOverflow.fade ),
-            shape: GFButtonShape.standard,
-            color: Colors.red.shade400,            
-            text:"Read whole article at ${widget.news.source.name}",
-          
-            onPressed: (){
-              Navigator.push(
+          widget.news.url != null
+              ? Container(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: GFButton(
+                      textStyle: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          overflow: TextOverflow.fade),
+                      shape: GFButtonShape.standard,
+                      color: Colors.red.shade400,
+                      text: "Read whole article at ${widget.news.source.name}",
+                      onPressed: () {
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => WebViewNewsPage(postUrl:widget.news.url )));
-            })):SizedBox()
+                                builder: (context) =>
+                                    WebViewNewsPage(postUrl: widget.news.url)));
+                      }))
+              : SizedBox()
         ],
       ),
     );
