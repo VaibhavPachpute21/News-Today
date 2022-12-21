@@ -1,16 +1,5 @@
-# newstoday
+# NewsToday
 
-A new Flutter project.
+## Screen Shots
+<img src="https://user-images.githubusercontent.com/77538181/208285519-41d5a08f-946e-4225-8b43-da5d661ccd6c.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285522-2760f266-c32d-4257-8d91-b739cc53d279.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285523-0e3cf5ce-a092-4c32-8844-7387584885aa.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285529-2d575902-573d-431f-ac0d-c28ce2d702b6.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285534-cbf790d9-7425-46cd-9ffe-3339b3f77080.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285545-fd62d2e1-5367-4f2c-9409-2c8d0d822ff6.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285557-bc4bab0d-7b7c-449d-adf0-1c84c10058c2.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285569-6492c807-84c9-4e17-98ff-6e3ff94f4532.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285573-21e0084b-5c21-4cda-9d39-703d70a56518.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285578-c505aaca-c439-436e-a40c-3dc58f8b7fbf.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285582-c8724872-58cc-48b0-90c2-dc44aaf407f0.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285588-4520bf7e-fa59-4c8a-b7ec-67733359d88a.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/77538181/208285593-0b5640ff-4f2a-41a1-a6b0-aa61dc5d78ec.jpg" width="45%"></img> 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
